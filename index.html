@@ -97,6 +97,7 @@ a.btn,.mo-cats button,.mo-x{background:rgba(15,35,71,.88);border:1.5px solid var
 .mo,.sh{font-family:var(--mf,"Vazirmatn",Tahoma,sans-serif)}
 a.btn{background:rgba(var(--lb-rgb,15,35,71),var(--lb-a,.88));border-color:var(--lb-bd,#f5b81c);color:var(--lb-tx,#fff);font-family:var(--lb-f,inherit);box-shadow:inset 0 0 0 3px rgba(var(--lb-rgb,15,35,71),.9),inset 0 0 0 4px rgba(var(--lb-bd-rgb,245,184,28),.35)}
 a.btn .ic{background:var(--lb-ic,#f5b81c)}
+.mo-sc{padding-bottom:96px}
 a.btn .t small{color:inherit;opacity:.75}
 </style>
 <meta name="description" content="">
@@ -233,9 +234,9 @@ ids.forEach(function(id){var it=itemsById[id],r=el('div','or-r');r.appendChild(e
 var p=el('button','qb','＋'),mi=el('button','qb','−');p.onclick=function(){setQ(id,1)};mi.onclick=function(){setQ(id,-1)};
 q.appendChild(p);q.appendChild(el('span','qn',fa(cart[id])));q.appendChild(mi);r.appendChild(q);shP.appendChild(r)});
 if(ids.length){
-var nt=el('input');nt.type='text';nt.maxLength=40;nt.placeholder='یادداشت (اختیاری، مثلاً بدون پیاز)';nt.value=note;
-nt.style.cssText='width:100%;box-sizing:border-box;margin-top:10px;padding:10px;border:1.5px solid #ccc;border-radius:12px;font-family:inherit;font-size:15px';
-nt.oninput=function(){note=nt.value.trim();refreshSend()};shP.appendChild(nt);
+var nt=el('textarea');nt.rows=2;nt.maxLength=200;nt.placeholder='یادداشت (اختیاری، مثلاً بدون پیاز)';nt.value=note;
+nt.style.cssText='width:100%;box-sizing:border-box;margin-top:10px;padding:10px;border:1.5px solid #ccc;border-radius:12px;font-family:inherit;font-size:15px;resize:vertical;line-height:1.7';
+nt.oninput=function(){note=nt.value.replace(/\s*\n\s*/g,' ').trim();refreshSend()};shP.appendChild(nt);
 shP.appendChild(el('p','or-n',ORD.note||'این سفارش آنلاین نیست، برای ثبت نهایی با شما تماس می‌گیریم.'));
 sendBox=el('div');shP.appendChild(sendBox);refreshSend();
 var L=ORD.links||{};
