@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>رستوران مفخم</title>
+<title>رستوران مفخم | منوی غذاها و قیمت‌ها</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -99,12 +99,18 @@ a.btn{background:rgba(var(--lb-rgb,15,35,71),var(--lb-a,.88));border-color:var(-
 a.btn .ic{background:var(--lb-ic,#f5b81c)}
 .mo-sc{padding-bottom:96px}
 a.btn .t small{color:inherit;opacity:.75}
-</style>
+#tools{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}#tools a.btn{padding:10px 12px;gap:10px;min-height:0}#tools a.btn .ic{width:34px;height:34px;font-size:17px}#tools a.btn .t{font-size:15px}#offb{position:fixed;top:0;left:0;right:0;background:#9a3412;color:#fff;padding:8px 12px;text-align:center;font-size:13px;z-index:95;display:none}</style>
 <meta name="description" content="">
 <meta property="og:type" content="website">
 <meta property="og:title" content="رستوران مفخم">
 <meta property="og:description" content="">
 <meta property="og:url" content="https://mofakhamrestaurant.ir/">
+<meta name="theme-color" content="#0f2347">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="uploads/1813b3c4cf4b405ab0b3692b.png">
+<meta name="apple-mobile-web-app-title" content="مفخم">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Restaurant","name":"رستوران مفخم","url":"https://mofakhamrestaurant.ir/","servesCuisine":"Iranian","menu":"https://mofakhamrestaurant.ir/#menu","telephone":["09370539163","05832749186"],"address":{"@type":"PostalAddress","streetAddress":"بجنورد - خیابان تربیت (خیابان سالن گلشن) - نبش تربیت ۱ - رستوران مفخم","addressLocality":"بجنورد","addressCountry":"IR"},"sameAs":["https://www.instagram.com/mofakham.restaurant/"]}</script>
 <style>:root{--pgc:#d6e6f5;--pg:none;--mc-rgb:15,35,71;--mc-a:0.88;--mc-bd:#f5b81c;--mc-bd-rgb:245,184,28;--mc-tx:#ffffff;--mc-pr:#f5b81c;--mc-pr-rgb:245,184,28;--mf:"Vazirmatn",Tahoma,"Segoe UI",system-ui,sans-serif;--lb-rgb:15,35,71;--lb-a:0.88;--lb-bd:#f5b81c;--lb-bd-rgb:245,184,28;--lb-tx:#ffffff;--lb-ic:#f5b81c;--lb-f:"Vazirmatn",Tahoma,"Segoe UI",system-ui,sans-serif;}</style></head>
 <body>
 <div class="ov"><main>
@@ -121,6 +127,7 @@ a.btn .t small{color:inherit;opacity:.75}
 <a class="btn" href="tel:09370539163"><span class="ic">📱</span><span class="t">تماس با موبایل<small>0937 053 9163</small></span></a>
 <a class="btn" href="tel:05832749186"><span class="ic">☎️</span><span class="t">تماس با تلفن ثابت<small>058 3274 9186</small></span></a></div>
 
+<div id="tools"></div>
 <div class="foot">تهیه شده با مواد اولیه تازه و با کیفیت</div>
 </main></div>
 
@@ -245,7 +252,7 @@ var cl=el('button','or-b','پاک کردن لیست');cl.onclick=function(){cart
 var x=el('button','sh-x','بستن');x.style.marginTop='8px';x.addEventListener('click',closeSheet);shP.appendChild(x)}
 function dpr(it){if(!(it.price>0&&it.disc>0))return 0;var v=Math.round(it.price*(100-it.disc)/100/500)*500;return v>0&&v<it.price?v:0}
 function load(){
-fetch('menu.json',{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
+fetch('menu.json',{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;if(r.headers.get('X-From-Cache')){OFFL=true;offBanner()}return r.json()}).then(function(d){
 cats=d.categories||[];
 cats.forEach(function(c){c.items.forEach(function(x){itemsById[x.id]=x})});
 if(cur>=cats.length)cur=0;
@@ -260,8 +267,110 @@ document.getElementById('menuClose').addEventListener('click',close);
 m.addEventListener('click',function(e){if(e.target===m||e.target.id==='menuSc')close()});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
 var IG='<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#0f2347" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#0f2347" stroke="none"/></svg>',ICON={link:'🔗',web:'🌐',phone:'📞',chat:'💬',plane:'✈️',pin:'📍',clock:'🕒',menu:'🍽️',star:'⭐',bike:'🛵',mail:'📧',gift:'🎁',map:'🗺️',home:'🏠',mobile:'📱',tel:'☎️',insta:'📷',car:'🚗',heart:'❤️',bell:'🔔',info:'ℹ️'};
+
+var OFFL=false,OFFMSG='اینترنت قطع است؛ ممکن است قیمت‌ها قدیمی باشد.',DEFER=null;
+function offBanner(msg){if(msg)OFFMSG=msg;var b=document.getElementById('offb');if(!b){b=el('div');b.id='offb';document.body.appendChild(b)}b.textContent=OFFMSG;b.style.display='block'}
+function tst(t){var d=el('div','',t);d.style.cssText='position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#0f2347;color:#fff;padding:10px 16px;border-radius:12px;z-index:90;font-size:14px';document.body.appendChild(d);setTimeout(function(){d.remove()},2500)}
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();DEFER=e;var b=document.getElementById('tInst');if(b)b.style.display=''});
+window.addEventListener('appinstalled',function(){var b=document.getElementById('tInst');if(b)b.style.display='none'});
+if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))try{navigator.serviceWorker.register('sw.js')}catch(_){}
+function pageUrl(){return location.origin+location.pathname}
+function vesc(t){return String(t).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\r?\n/g,'\\n')}
+function vcard(s){var c=s.contact||{},i=c.inc||{},L=s.links||{},nm=c.name||document.title,o=['BEGIN:VCARD','VERSION:3.0','FN:'+vesc(nm),'ORG:'+vesc(nm)];
+if(i.phones!==false){if(L.mob)o.push('TEL;TYPE=CELL,VOICE:'+L.mob);if(L.tel)o.push('TEL;TYPE=WORK,VOICE:'+L.tel)}
+if(i.web!==false)o.push('URL:'+pageUrl());
+if(i.insta!==false&&L.insta)o.push('URL:'+L.insta);
+if(i.address!==false&&c.address)o.push('ADR;TYPE=WORK:;;'+vesc(c.address)+';'+vesc((s.seo||{}).city||'')+';;;ایران');
+var n=[];if(i.hours!==false&&c.hours)n.push('ساعت کاری: '+c.hours);if(i.map!==false&&L.addr)n.push('نقشه: '+L.addr);if(i.note!==false&&c.note)n.push(c.note);
+if(n.length)o.push('NOTE:'+vesc(n.join('\n')));o.push('END:VCARD');return o.join('\r\n')}
+var ANDROID=/Android/i.test(navigator.userAgent);
+function downloadVcf(s){var b=new Blob([vcard(s)],{type:'text/vcard;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='mofakham.vcf';document.body.appendChild(a);a.click();a.remove()}
+/* باز کردن intent اندروید؛ اگر صفحه پنهان نشد (یعنی برنامه‌ای باز نشد) تابع fb اجرا می‌شود */
+function openIntent(u,fb){var ok=false;function h(){if(document.hidden)ok=true}
+document.addEventListener('visibilitychange',h);window.addEventListener('pagehide',h);window.addEventListener('blur',h);
+var a=document.createElement('a');a.href=u;document.body.appendChild(a);a.click();a.remove();
+setTimeout(function(){document.removeEventListener('visibilitychange',h);window.removeEventListener('pagehide',h);window.removeEventListener('blur',h);if(!ok&&!document.hidden&&fb)fb()},1800)}
+function contactIntent(s){var c=s.contact||{},i=c.inc||{},L=s.links||{},nm=c.name||document.title,e=encodeURIComponent,o='intent:#Intent;action=android.intent.action.INSERT;type=vnd.android.cursor.dir/contact;S.name='+e(nm)+';S.company='+e(nm)+';';
+if(i.phones!==false){if(L.mob)o+='S.phone='+e(L.mob)+';';if(L.tel)o+='S.secondary_phone='+e(L.tel)+';'}
+if(i.address!==false&&c.address)o+='S.postal='+e(c.address)+';';
+var n=[];if(i.web!==false)n.push(pageUrl());if(i.insta!==false&&L.insta)n.push(L.insta);if(i.hours!==false&&c.hours)n.push('ساعت کاری: '+c.hours);if(i.map!==false&&L.addr)n.push('نقشه: '+L.addr);if(i.note!==false&&c.note)n.push(c.note);
+if(n.length)o+='S.notes='+e(n.join('\n'))+';';
+return o+'end'}
+function saveContact(s){if(ANDROID){openIntent(contactIntent(s),function(){downloadVcf(s)});return}downloadVcf(s)}
+function shareSheet(u,t){shP.innerHTML='';shP.appendChild(el('h3','or-t','اشتراک‌گذاری منو'));
+var e=encodeURIComponent;
+[['✈️ تلگرام','https://t.me/share/url?url='+e(u)+'&text='+e(t)],['💬 واتساپ','https://wa.me/?text='+e(t+'\n'+u)],['✉️ پیامک','sms:?&body='+e(t+'\n'+u)]].forEach(function(x){var a=el('a','or-b',x[0]);a.href=x[1];if(x[1].indexOf('http')===0){a.target='_blank';a.rel='noopener'}shP.appendChild(a)});
+var cp=el('button','or-b','📋 کپی لینک');cp.onclick=function(){copyText(u);cp.textContent='لینک کپی شد ✓'};shP.appendChild(cp);sheetClose()}
+function shareSite(s){var u=pageUrl(),t=(s.share&&s.share.title)||document.title;
+function fb(){if(ANDROID)openIntent('intent:#Intent;action=android.intent.action.SEND;type=text/plain;S.android.intent.extra.SUBJECT='+encodeURIComponent(t)+';S.android.intent.extra.TEXT='+encodeURIComponent(t+'\n'+u)+';end',function(){shareSheet(u,t)});else shareSheet(u,t)}
+if(navigator.share){navigator.share({title:t,url:u}).catch(function(err){if(!err||err.name!=='AbortError')fb()})}else fb()}
+function qrMatrix(text,ecl){
+var ECC=[[7,10,15,20,26,18,20,24,30,18],[10,16,26,18,24,16,18,22,22,26],[13,22,18,26,18,24,18,22,20,24],[17,28,22,16,22,28,26,26,24,28]];
+var NB=[[1,1,1,1,1,2,2,2,2,4],[1,1,1,2,2,4,4,4,5,5],[1,1,2,2,4,4,6,6,8,8],[1,1,2,4,4,4,5,6,8,8]];
+var data=Array.prototype.slice.call(new TextEncoder().encode(text)),n=data.length;
+function raw(v){var r=(16*v+128)*v+64;if(v>=2){var a=Math.floor(v/7)+2;r-=(25*a-10)*a-55;if(v>=7)r-=36}return r}
+var v=1;for(;v<=10;v++){var cw=Math.floor(raw(v)/8)-ECC[ecl][v-1]*NB[ecl][v-1];if(4+(v<10?8:16)+8*n<=cw*8)break}
+if(v>10)return null;
+var R=Math.floor(raw(v)/8),nb=NB[ecl][v-1],eb=ECC[ecl][v-1],dcw=R-eb*nb;
+var bits=[];function put(x,l){for(var i=l-1;i>=0;i--)bits.push((x>>i)&1)}
+put(4,4);put(n,v<10?8:16);data.forEach(function(b){put(b,8)});
+for(var t=0;t<4&&bits.length<dcw*8;t++)bits.push(0);
+while(bits.length%8)bits.push(0);
+for(var pb=0xEC;bits.length<dcw*8;pb^=0xEC^0x11)put(pb,8);
+var cwd=[];for(var i=0;i<bits.length;i+=8){var x=0;for(var j=0;j<8;j++)x=x*2+bits[i+j];cwd.push(x)}
+var ex=[],lg=[];for(var i=0,x=1;i<255;i++){ex[i]=x;lg[x]=i;x<<=1;if(x&256)x^=0x11D}
+function mul(a,b){return a&&b?ex[(lg[a]+lg[b])%255]:0}
+var gen=[1];for(var i=0;i<eb;i++){var nx=[];for(var j=0;j<=gen.length;j++)nx[j]=0;for(var j=0;j<gen.length;j++){nx[j]^=gen[j];nx[j+1]^=mul(gen[j],ex[i])}gen=nx}
+function rs(d){var r=[];for(var i=0;i<eb;i++)r.push(0);d.forEach(function(b){var f=b^r.shift();r.push(0);for(var i=0;i<eb;i++)r[i]^=mul(gen[i+1],f)});return r}
+var ns=nb-R%nb,sl=Math.floor(R/nb),blocks=[],k=0;
+for(var i=0;i<nb;i++){var dl=sl-eb+(i<ns?0:1),d=cwd.slice(k,k+dl);k+=dl;blocks.push({d:d,e:rs(d)})}
+var fin=[];for(var i=0;i<=sl-eb;i++)blocks.forEach(function(b){if(i<b.d.length)fin.push(b.d[i])});
+for(var i=0;i<eb;i++)blocks.forEach(function(b){fin.push(b.e[i])});
+var S=v*4+17,M=[],F=[];for(var y=0;y<S;y++){M.push(new Array(S).fill(0));F.push(new Array(S).fill(false))}
+function st(x,y,b){if(x>=0&&y>=0&&x<S&&y<S){M[y][x]=b?1:0;F[y][x]=true}}
+for(var i=0;i<S;i++){st(6,i,i%2===0);st(i,6,i%2===0)}
+function finder(cx,cy){for(var dy=-4;dy<=4;dy++)for(var dx=-4;dx<=4;dx++){var d=Math.max(Math.abs(dx),Math.abs(dy));st(cx+dx,cy+dy,d!==2&&d!==4)}}
+finder(3,3);finder(S-4,3);finder(3,S-4);
+if(v>1){var na=Math.floor(v/7)+2,step=v===32?26:Math.ceil((v*4+4)/(na*2-2))*2,ap=[6];for(var p=S-7;ap.length<na;p-=step)ap.splice(1,0,p);
+for(var a=0;a<na;a++)for(var b=0;b<na;b++){if((a===0&&b===0)||(a===0&&b===na-1)||(a===na-1&&b===0))continue;for(var dy=-2;dy<=2;dy++)for(var dx=-2;dx<=2;dx++)st(ap[a]+dx,ap[b]+dy,Math.max(Math.abs(dx),Math.abs(dy))!==1)}}
+function rv(x,y){if(!F[y][x])st(x,y,0)}
+for(var i=0;i<9;i++){rv(8,i);rv(i,8)}
+for(var i=0;i<8;i++){rv(S-1-i,8);rv(8,S-1-i)}
+st(8,S-8,1);
+if(v>=7){var r=v;for(var i=0;i<12;i++)r=(r<<1)^((r>>11)*0x1F25);var vb=(v<<12)|r;for(var i=0;i<18;i++){var bt=(vb>>i)&1,a=S-11+i%3,b=Math.floor(i/3);st(a,b,bt);st(b,a,bt)}}
+var all=[];fin.forEach(function(b){for(var i=7;i>=0;i--)all.push((b>>i)&1)});
+var ix=0;for(var rt=S-1;rt>=1;rt-=2){if(rt===6)rt=5;for(var vt=0;vt<S;vt++)for(var j=0;j<2;j++){var x=rt-j,up=((rt+1)&2)===0,y=up?S-1-vt:vt;if(!F[y][x]&&ix<all.length)M[y][x]=all[ix++]}}
+var MF=[function(x,y){return(x+y)%2===0},function(x,y){return y%2===0},function(x,y){return x%3===0},function(x,y){return(x+y)%3===0},function(x,y){return(Math.floor(x/3)+Math.floor(y/2))%2===0},function(x,y){return x*y%2+x*y%3===0},function(x,y){return(x*y%2+x*y%3)%2===0},function(x,y){return((x+y)%2+x*y%3)%2===0}];
+var FB=[1,0,3,2][ecl];
+function build(mk){var T=M.map(function(r){return r.slice()});
+for(var y=0;y<S;y++)for(var x=0;x<S;x++)if(!F[y][x]&&MF[mk](x,y))T[y][x]^=1;
+var d=(FB<<3)|mk,r=d;for(var i=0;i<10;i++)r=(r<<1)^((r>>9)*0x537);var fb=((d<<10)|r)^0x5412;
+function g(i){return(fb>>i)&1}
+for(var i=0;i<=5;i++)T[i][8]=g(i);T[7][8]=g(6);T[8][8]=g(7);T[8][7]=g(8);for(var i=9;i<15;i++)T[8][14-i]=g(i);
+for(var i=0;i<8;i++)T[8][S-1-i]=g(i);for(var i=8;i<15;i++)T[S-15+i][8]=g(i);T[S-8][8]=1;
+return T}
+function pen(T){var p=0;for(var a=0;a<2;a++)for(var y=0;y<S;y++){var run=1;for(var x=1;x<S;x++){var c=a?T[x][y]:T[y][x],pv=a?T[x-1][y]:T[y][x-1];if(c===pv){run++;if(run===5)p+=3;else if(run>5)p++}else run=1}}
+for(var y=0;y<S-1;y++)for(var x=0;x<S-1;x++){var c=T[y][x];if(c===T[y][x+1]&&c===T[y+1][x]&&c===T[y+1][x+1])p+=3}return p}
+var best=null,bp=1e9;for(var mk=0;mk<8;mk++){var T=build(mk),p=pen(T);if(p<bp){bp=p;best=T}}
+return best}
+
+function sheetClose(){var b=el('button','sh-x','بستن');b.style.marginTop='8px';b.addEventListener('click',closeSheet);shP.appendChild(b);sh.classList.add('on')}
+function qrSheet(){var m=qrMatrix(pageUrl(),2);shP.innerHTML='';shP.appendChild(el('h3','or-t','QR منو'));
+if(!m){shP.appendChild(el('p','sh-d','ساخت QR ممکن نشد.'))}else{var n=m.length,q=4,k=Math.max(4,Math.floor(300/(n+2*q))),sz=(n+2*q)*k,cv=document.createElement('canvas');cv.width=cv.height=sz;var c=cv.getContext('2d');c.fillStyle='#fff';c.fillRect(0,0,sz,sz);c.fillStyle='#0f2347';for(var y=0;y<n;y++)for(var x=0;x<n;x++)if(m[y][x])c.fillRect((x+q)*k,(y+q)*k,k,k);cv.style.cssText='display:block;margin:10px auto;max-width:100%;height:auto;border-radius:12px';shP.appendChild(cv);shP.appendChild(el('p','or-n','برای ارسال منو به دیگران، این کد را اسکن کنند.'))}
+sheetClose()}
+function installSite(){if(DEFER){DEFER.prompt();DEFER.userChoice.then(function(){DEFER=null});return}shP.innerHTML='';shP.appendChild(el('h3','or-t','نصب منو روی گوشی'));
+shP.appendChild(el('p','sh-d',/iPhone|iPad|iPod/.test(navigator.userAgent)?'در سافاری، دکمه‌ی «اشتراک‌گذاری» (Share) را بزنید و «Add to Home Screen» (افزودن به صفحه‌ی اصلی) را انتخاب کنید.':'در مرورگر کروم، منوی سه‌نقطه (⋮) بالای صفحه را بزنید و «Install app» (نصب برنامه) یا «Add to Home screen» (افزودن به صفحه‌ی اصلی) را انتخاب کنید.'));sheetClose()}
+function buildTools(s){var T=s.tools||{},tl=document.getElementById('tools');if(!tl)return;tl.innerHTML='';
+function tb(id,ic,t,fn,hide){var a=el('a','btn');a.href='#';a.id=id;if(hide)a.style.display='none';var sp=el('span','ic');if(ic.indexOf('<svg')===0)sp.innerHTML=ic;else sp.textContent=ic;a.appendChild(sp);a.appendChild(el('span','t',t));a.addEventListener('click',function(e){e.preventDefault();fn()});tl.appendChild(a)}
+var std=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone,ios=/iPhone|iPad|iPod/.test(navigator.userAgent),SVG_SHARE='<svg viewBox="0 0 24 24" width="20" height="20" fill="#0f2347"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>',SVG_QR='<svg viewBox="0 0 24 24" width="21" height="21" fill="#0f2347"><path fill-rule="evenodd" d="M3 3h7v7H3V3zm2 2v3h3V5H5zM14 3h7v7h-7V3zm2 2v3h3V5h-3zM3 14h7v7H3v-7zm2 2v3h3v-3H5z"/><path d="M14 14h2.6v2.6H14zM18.4 14H21v2.6h-2.6zM16.2 16.2h2.6v2.6h-2.6zM14 18.4h2.6V21H14zM18.4 18.4H21V21h-2.4z"/></svg>';
+if(T.share!==false)tb('tShare',SVG_SHARE,'اشتراک‌گذاری',function(){shareSite(s)});
+if(T.contact!==false)tb('tCon','👤','ذخیره در مخاطبین',function(){saveContact(s)});
+if(T.install!==false&&s.pwa&&s.pwa.icon&&!std)tb('tInst','📲','نصب منو',installSite,!(ios||ANDROID||DEFER));
+if(T.qr!==false)tb('tQr',SVG_QR,'QR منو',qrSheet);
+if(!tl.children.length)tl.style.display='none'}
 function setupHome(){
-fetch('settings.json',{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(s){
+fetch('settings.json',{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;if(r.headers.get('X-From-Cache'))OFFL=true;return r.json()}).then(function(s){
+if(OFFL)offBanner((s.offline||{}).msg);else OFFMSG=(s.offline||{}).msg||OFFMSG;try{buildTools(s)}catch(_){}
 ORD=s.order||{};ORD.ok=true;ORD.state=s.state||calcState(s.order||{});ORD.links=s.links||{};try{updBar();if(cats.length)renderItems()}catch(_){}
 var FM={};(s.fonts||[]).forEach(function(f){FM[f.id]=f.stack});(s.iconList||[]).forEach(function(i){ICON[i.id]=i.e});function ig(id){id=String(id||'');if(id.indexOf('img:')===0)return'<img src="uploads/'+id.slice(4).replace(/[^\w.]/g,'')+'" alt="">';return id==='insta'?IG:(ICON[id]||'🔗')}
 var F=document.querySelector('.foot');if(F&&s.foot){F.innerHTML='';s.foot.forEach(function(f){var t=typeof f==='string'?f:f.t;if(t){var d=el('div','',t);d.style.fontSize=({s:12,m:13,l:16,xl:19}[f.s||'m']||13)+'px';if(f.f&&f.f!=='vazir'&&FM[f.f])d.style.fontFamily=FM[f.f];if(f.c)d.style.color=f.c;F.appendChild(d)}})}
